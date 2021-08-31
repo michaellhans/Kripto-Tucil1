@@ -1,6 +1,6 @@
 from typing import Any
 
-def encryptAffineChiper(plaintext, n, m, b):
+def encryptAffineCipher(plaintext, n, m, b):
     '''
         plaintext: teks yang ingin di enkripsi
         n: ukuran alfabet
@@ -8,7 +8,7 @@ def encryptAffineChiper(plaintext, n, m, b):
         b: jumlah pergeseran
     '''
     #TODO handle tanda baca, spasi, angka (selain 26 alphabet)
-    chiper = ""
+    cipher = ""
     for letter in plaintext:
         base = "a"
         if letter.isupper():
@@ -18,8 +18,8 @@ def encryptAffineChiper(plaintext, n, m, b):
         c = (m*p_ord + b) % n
         c_ord = c + ord(base)
 
-        chiper += chr(c_ord)
-    return chiper
+        cipher += chr(c_ord)
+    return cipher
 
 def getInversion(n, m):
     # cari inversi m (mod n)   
@@ -30,9 +30,9 @@ def getInversion(n, m):
     # tidak ditemukan
     return Any, False
 
-def decryptAffineChiper(chipertext, n, m, b):
+def decryptAffineCipher(ciphertext, n, m, b):
     '''
-        chipertext: teks yang ingin di dekripsi
+        ciphertext: teks yang ingin di dekripsi
         n: ukuran alfabet
         m: bilangan bulat yang relatif prima dengan n
         b: jumlah pergeseran
@@ -40,7 +40,7 @@ def decryptAffineChiper(chipertext, n, m, b):
     m_inv, flag = getInversion(n, m)
     if flag:
         plain = ""
-        for letter in chipertext:
+        for letter in ciphertext:
             base = "a"
             if letter.isupper():
                 base = "A"
@@ -57,8 +57,8 @@ def decryptAffineChiper(chipertext, n, m, b):
 # TEST SECTION
 n, m, b = 26, 7, 10
 plaintext = "KriptO"
-chipertext = encryptAffineChiper(plaintext, n, m, b)
+ciphertext = encryptAffineCipher(plaintext, n, m, b)
 
 print("plaintext:", plaintext)
-print("encrypt:", chipertext)
-print("decrypt:", decryptAffineChiper(chipertext, n, m, b))
+print("encrypt:", ciphertext)
+print("decrypt:", decryptAffineCipher(ciphertext, n, m, b))
