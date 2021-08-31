@@ -24,7 +24,7 @@ def encryptAffineCipher(plaintext, n, m, b):
 def getInversion(n, m):
     # cari inversi m (mod n)   
     for i in range(1,n):
-        if ((m % n)*(i % n) % n == 1):
+        if ((m*i) % n == 1):
             return i, True
     
     # tidak ditemukan
