@@ -1,4 +1,5 @@
 from typing import Any
+import string
 
 def encryptAffineCipher(plaintext, n, m, b):
     '''
@@ -7,18 +8,11 @@ def encryptAffineCipher(plaintext, n, m, b):
         m: bilangan bulat yang relatif prima dengan n
         b: jumlah pergeseran
     '''
-    #TODO handle tanda baca, spasi, angka (selain 26 alphabet)
     cipher = ""
     for letter in plaintext:
-        base = "a"
-        if letter.isupper():
-            base = "A"
-        
-        p_ord = ord(letter) - ord(base)
-        c = (m*p_ord + b) % n
-        c_ord = c + ord(base)
-
-        cipher += chr(c_ord)
+        p_pos = string.ascii_lowercase.rfind(letter)
+        c = (m*p_pos + b) % n
+        cipher += string.ascii_lowercase[c]
     return cipher
 
 def getInversion(n, m):
@@ -41,24 +35,18 @@ def decryptAffineCipher(ciphertext, n, m, b):
     if flag:
         plain = ""
         for letter in ciphertext:
-            base = "a"
-            if letter.isupper():
-                base = "A"
-            
-            c_ord = ord(letter) - ord(base)
-            c = (m_inv*(c_ord - b)) % n
-            p_ord = c + ord(base)
-
-            plain += chr(p_ord)
+            c_pos = string.ascii_lowercase.rfind(letter)
+            c = (m_inv*(c_pos - b)) % n
+            plain += string.ascii_lowercase[c]
         return plain
     else:
         return str(m) + " tidak relatif prima dengan " + str(n)
 
 # TEST SECTION
 n, m, b = 26, 7, 10
-plaintext = "KriptO"
+plaintext = "kripto"
 ciphertext = encryptAffineCipher(plaintext, n, m, b)
 
 print("plaintext:", plaintext)
-print("encrypt:", ciphertext)
+print("encrypt:", ciphertext.upper())
 print("decrypt:", decryptAffineCipher(ciphertext, n, m, b))
