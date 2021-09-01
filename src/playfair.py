@@ -9,13 +9,15 @@ def processPlainText(plaintext):
     bigram_list = []
     i = 0
     while (i<len(plaintext)-1):
+        n_letter = len(plaintext)
         if (plaintext[i] == plaintext[i+1]):
             # 3. sisip x pada pasangan huruf sama
             bigram_list.append(plaintext[i]+"x")
-            # 4. huruf ganjil tambah x di akhir
-            if (len(plaintext)%2 == 0):
-                plaintext += "x"
+            n_letter += 1
             i += 1
+        # 4. huruf ganjil tambah x di akhir
+        if (n_letter%2 != 0):
+            plaintext += "x"
         bigram_list.append(plaintext[i]+plaintext[i+1])
         i += 2
 
