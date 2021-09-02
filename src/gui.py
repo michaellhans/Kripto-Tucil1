@@ -1,7 +1,52 @@
 import PySimpleGUI as sg
 import threading
 from auto_key_vigenere import *
+from default_full_vigenere import *
+from extended_vigenere import *
+from playfair import *
+from affine import *
+from hill import *
 from util import *
+
+def process_input(key, input_text, ciphere_type, cipher_format, encrypt_mode):
+    print(ciphere_type)
+    if (ciphere_type == 'Vigenere Ciphere'):
+        if (encrypt_mode):
+            output_text = vigenere_cipher(input_text, key)
+        else: 
+            output_text = decrypt_vigenere_cepher(input_text, key)
+
+    elif (ciphere_type == 'Full Vigenere Ciphere'):
+        if (encrypt_mode):
+            output_text = vigenere_cipher(input_text, key, full_cipher_matrix)
+        else: 
+            output_text = decrypt_vigenere_cepher(input_text, key, full_cipher_matrix)
+
+    elif (ciphere_type == 'Auto-key Vigenere Ciphere'):
+        if (encrypt_mode):
+            output_text = auto_key_vigenere_cipher(input_text, key)
+        else: 
+            output_text = decrypt_auto_key_vigenere_cepher(input_text, key)
+
+    elif (ciphere_type == 'Extended Vigenere Ciphere'):
+        if (encrypt_mode):
+            output_text = extended_vigenere_cipher(input_text, key)
+        else: 
+            output_text = decrypt_extended_vigenere_cepher(input_text, key)
+
+    # Hengky tambahin yak tengkyuu
+    elif (ciphere_type == 'Playfair Ciphere'):
+        None
+    elif (ciphere_type == 'Affine Ciphere'):
+        None
+    elif (ciphere_type == 'Hill Ciphere'):
+        None
+
+    print("Input text\t:", input_text)
+    print("Output text\t:", output_text)
+    if (cipher_format == True):
+        output_text = showPerFive(output_text)
+    return output_text
 
 def gui_execute():
     sg.theme('DarkAmber')   # Add a touch of color
@@ -16,6 +61,8 @@ def gui_execute():
         'Hill Ciphere'
     ]
     
+    encrypt_mode = True
+
     # All the stuff inside your window.
     col1 = [[sg.Text('Key')],[sg.Multiline(size=(65,2), key='key')]]
     col2 = [[sg.Text('Ciphere Type')],[sg.Combo(encryption_cipher, default_value='Vigenere Ciphere',key='ciphere_type')]]
@@ -39,7 +86,6 @@ def gui_execute():
     # Create the Window
     width, height = sg.Window.get_screen_size()
     width, height = round(width * 0.6), round(height * 0.8)
-    print(width, height) 
     window = sg.Window('Cryptography Simple Encryption', layout, size=(width, height))
 
     # Event Loop to process "events" and get the "values" of the inputs
@@ -47,18 +93,16 @@ def gui_execute():
         event, values = window.read(timeout = 10)
         if event == sg.WIN_CLOSED or event == 'Exit': # if user closes window or clicks cancel
             break
+        if event == 'Encryption Mode':
+            encrypt_mode = True
+        if event == 'Decryption Mode':
+            encrypt_mode = False
         if event == "ENCRYPT NOW":
             key = preprocessPlainText(values['key'])
             input_text = preprocessPlainText(values['box_1'])
-
-            print(values['ciphere_type'])
-            output_text = auto_key_vigenere_cipher(input_text, key)
-            print("Plain text\t:", input_text)
-            print("Cipher text\t:", output_text)
-
-            if (values['ciphere_format_1'] == True):
-                output_text = showPerFive(output_text)
-            # print("Decrypted text\t:",decrypt_auto_key_vigenere_cepher(output_text, key))
+            ciphere_type = values['ciphere_type']
+            ciphere_format = values['ciphere_format_1']
+            output_text = process_input(key, input_text, ciphere_type, ciphere_format, encrypt_mode)
             window['box_2'].update(output_text)
 
     window.close()

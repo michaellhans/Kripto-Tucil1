@@ -91,10 +91,11 @@ def decryptPlayfairCipher(ciphertext, kunci):
     
     return plaintext.replace('x','')
 
-# TEST AREA
-plaintext = "temuiibunantimalam"
-key = "JALANGANESHASEPULUH"
-ciphertext = encryptPlayfairCipher(plaintext, key).upper()
-print("plaintext: ", plaintext)
-print("encrypt: ", ciphertext)
-print("decrypt: ", decryptPlayfairCipher(ciphertext.lower(), key))
+# Unit Testing
+if __name__ == "__main__":
+    plaintext = "temuiibunantimalam"
+    key = "JALANGANESHASEPULUH"
+    ciphertext = encryptPlayfairCipher(plaintext, key).upper()
+    print("plaintext: ", plaintext)
+    print("encrypt: ", ciphertext)
+    print("decrypt: ", decryptPlayfairCipher(ciphertext.lower(), key))

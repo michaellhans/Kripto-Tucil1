@@ -19,8 +19,9 @@ def showPerFive(ciphertext):
     cipher_list = [ciphertext[idx: idx+5] for idx in range(0, len(ciphertext), 5)]
     return " ".join(cipher_list)
 
-# TEST AREA
-plaintext = "!abc\n123  d.e,f345 gh\ni?"
-print("was:", plaintext)
-print("then:", preprocessPlainText("!abc\n123  d.e,f345 ghi?"))
-print(showPerFive("ABCDEFGHIJK"))
+# Unit Testing
+if __name__ == "__main__":
+    plaintext = "!abc\n123  d.e,f345 gh\ni?"
+    print("was:", plaintext)
+    print("then:", preprocessPlainText("!abc\n123  d.e,f345 ghi?"))
+    print(showPerFive("ABCDEFGHIJK"))

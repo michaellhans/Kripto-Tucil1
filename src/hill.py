@@ -57,10 +57,11 @@ def decryptHillCipher(ciphertext, kunci):
     
     return plaintext
 
-# TEST AREA
-kunci = [[17, 17, 5], [21, 18, 21], [2, 2, 19]]
-plaintext = "paymoremoney"
-ciphertext = encryptHillCipher(plaintext, kunci)
-print("plaintext: ", plaintext)
-print("encrypt: ", ciphertext.upper())
-print("decrypt: ", decryptHillCipher(ciphertext.lower(), kunci))
+# Unit Testing
+if __name__ == "__main__":
+    kunci = [[17, 17, 5], [21, 18, 21], [2, 2, 19]]
+    plaintext = "paymoremoney"
+    ciphertext = encryptHillCipher(plaintext, kunci)
+    print("plaintext: ", plaintext)
+    print("encrypt: ", ciphertext.upper())
+    print("decrypt: ", decryptHillCipher(ciphertext.lower(), kunci))

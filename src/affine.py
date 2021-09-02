@@ -42,11 +42,12 @@ def decryptAffineCipher(ciphertext, n, m, b):
     else:
         return str(m) + " tidak relatif prima dengan " + str(n)
 
-# TEST SECTION
-n, m, b = 26, 7, 10
-plaintext = "kripto"
-ciphertext = encryptAffineCipher(plaintext, n, m, b)
+# Unit Testing
+if __name__ == "__main__":
+    n, m, b = 26, 7, 10
+    plaintext = "kripto"
+    ciphertext = encryptAffineCipher(plaintext, n, m, b)
 
-print("plaintext:", plaintext)
-print("encrypt:", ciphertext.upper())
-print("decrypt:", decryptAffineCipher(ciphertext, n, m, b))
+    print("plaintext:", plaintext)
+    print("encrypt:", ciphertext.upper())
+    print("decrypt:", decryptAffineCipher(ciphertext, n, m, b))
