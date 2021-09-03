@@ -34,13 +34,22 @@ def process_input(key, input_text, ciphere_type, cipher_format, encrypt_mode):
         else: 
             output_text = decrypt_extended_vigenere_cepher(input_text, key)
 
-    # Hengky tambahin yak tengkyuu
+    # TODO: Hengky tambahin yak tengkyuu
     elif (ciphere_type == 'Playfair Ciphere'):
-        None
+        if (encrypt_mode):
+            output_text = encryptPlayfairCipher(input_text.lower(), key).upper()
+        else: 
+            output_text = decryptPlayfairCipher(input_text.lower(), key)
     elif (ciphere_type == 'Affine Ciphere'):
-        None
+        if (encrypt_mode):
+            output_text = encryptAffineCipher(input_text.lower(), 26, 7, 10).upper()
+        else: 
+            output_text = decryptAffineCipher(input_text.lower(), 26, 7, 10)
     elif (ciphere_type == 'Hill Ciphere'):
-        None
+        if (encrypt_mode):
+            output_text = encryptHillCipher(input_text.lower(), key).upper()
+        else: 
+            output_text = decryptHillCipher(input_text.lower(), key)
 
     print("Input text\t:", input_text)
     print("Output text\t:", output_text)
@@ -70,6 +79,7 @@ def gui_execute():
         [sg.Radio('No Space', "CIPHER_FORMAT", default=True, key='ciphere_format_0')],
         [sg.Radio('Five Char Group', "CIPHER_FORMAT", default=False, key='ciphere_format_1')]
     ]
+    #col4 = [[sg.Text('Name', size =(2, 1)), sg.Input()]]
 
     layout = [  [sg.Text('Cryptography Simple Encryption', font =('Roboto', 30), justification ='center')],
                 [sg.Text('_' * 130)],
