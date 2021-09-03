@@ -7,6 +7,7 @@ from playfair import *
 from affine import *
 from hill import *
 from util import *
+import numpy
 
 def process_input(key, input_text, ciphere_type, cipher_format, encrypt_mode):
     print(ciphere_type)
@@ -42,9 +43,9 @@ def process_input(key, input_text, ciphere_type, cipher_format, encrypt_mode):
             output_text = decryptPlayfairCipher(input_text.lower(), key)
     elif (ciphere_type == 'Affine Ciphere'):
         if (encrypt_mode):
-            output_text = encryptAffineCipher(input_text.lower(), 26, 7, 10).upper()
+            output_text = encryptAffineCipher(input_text.lower(), 26, int(key[0]), int(key[1])).upper()
         else: 
-            output_text = decryptAffineCipher(input_text.lower(), 26, 7, 10)
+            output_text = decryptAffineCipher(input_text.lower(), 26, int(key[0]), int(key[1]))
     elif (ciphere_type == 'Hill Ciphere'):
         if (encrypt_mode):
             output_text = encryptHillCipher(input_text.lower(), key).upper()
@@ -108,10 +109,17 @@ def gui_execute():
         if event == 'Decryption Mode':
             encrypt_mode = False
         if event == "ENCRYPT NOW":
-            key = preprocessPlainText(values['key'])
             input_text = preprocessPlainText(values['box_1'])
             ciphere_type = values['ciphere_type']
             ciphere_format = values['ciphere_format_1']
+            if (ciphere_type == "Hill Ciphere"):
+                # ex: 17 17 5; 21 18 21; 2 2 19
+                key = np.matrix(values['key'])
+            elif (ciphere_type == "Affine Ciphere"):
+                # format m, b (ex: 7, 10)
+                key = values['key'].split(",")
+            else:
+                key = preprocessPlainText(values['key'])
             output_text = process_input(key, input_text, ciphere_type, ciphere_format, encrypt_mode)
             window['box_2'].update(output_text)
 

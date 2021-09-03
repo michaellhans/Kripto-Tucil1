@@ -59,7 +59,8 @@ def decryptHillCipher(ciphertext, kunci):
 
 # Unit Testing
 if __name__ == "__main__":
-    kunci = [[17, 17, 5], [21, 18, 21], [2, 2, 19]]
+    #kunci = [[17, 17, 5], [21, 18, 21], [2, 2, 19]]
+    kunci = np.matrix("17 17 5; 21 18 21; 2 2 19")
     plaintext = "paymoremoney"
     ciphertext = encryptHillCipher(plaintext, kunci)
     print("plaintext: ", plaintext)
