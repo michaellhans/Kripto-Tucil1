@@ -84,10 +84,10 @@ def gui_execute():
 
     layout = [  [sg.Text('Cryptography Simple Encryption', font =('Roboto', 30), justification ='center')],
                 [sg.Text('_' * 130)],
-                [sg.Text('Plain Text')],[sg.Multiline(size=(130,7), key='box_1')],
+                [sg.Text('Plain Text', key='-IN-')],[sg.Multiline(size=(130,7), key='box_1')],
                 [sg.Column(col1), sg.Column(col2), sg.Column(col3)],
                 [sg.Text('_' * 130)],
-                [sg.Text('Cipher Text')],[sg.Multiline(size=(130,7), key='box_2')],
+                [sg.Text('Cipher Text', key='-OUT-')],[sg.Multiline(size=(130,7), key='box_2')],
                 [sg.Text(' ' * 130)],
                 [sg.Button('ENCRYPT NOW'), sg.Button('Decryption Mode'), sg.Button('Encryption Mode'), sg.Button('Save Cipher'), sg.Button('Exit', size = (10, 1))],
             ]
@@ -106,8 +106,14 @@ def gui_execute():
             break
         if event == 'Encryption Mode':
             encrypt_mode = True
+            window['-OUT-'].update("Cipher Text")
+            window['-IN-'].update("Plain Text")
+            #window['-Button-'].update("ENCRYPT NOW")
         if event == 'Decryption Mode':
             encrypt_mode = False
+            window['-OUT-'].update("Plain Text")
+            window['-IN-'].update("Cipher Text")
+            #window['-Button-'].update("DECRYPT NOW")
         if event == "ENCRYPT NOW":
             input_text = preprocessPlainText(values['box_1'])
             ciphere_type = values['ciphere_type']
