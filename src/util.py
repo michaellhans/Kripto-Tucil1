@@ -24,6 +24,10 @@ def saveCiphertext(ciphertext, filename):
     file.write(ciphertext)
     file.close()
 
+def readFile(path):
+    f = open(path, "r")
+    return f.read()
+
 # Unit Testing
 if __name__ == "__main__":
     # plaintext = "!abc\n123  d.e,f345 gh\ni?"

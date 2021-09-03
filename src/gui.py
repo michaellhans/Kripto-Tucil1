@@ -35,7 +35,6 @@ def process_input(key, input_text, ciphere_type, cipher_format, encrypt_mode):
         else: 
             output_text = decrypt_extended_vigenere_cepher(input_text, key)
 
-    # TODO: Hengky tambahin yak tengkyuu
     elif (ciphere_type == 'Playfair Ciphere'):
         if (encrypt_mode):
             output_text = encryptPlayfairCipher(input_text.lower(), key).upper()
@@ -84,6 +83,7 @@ def gui_execute():
 
     layout = [  [sg.Text('Cryptography Simple Encryption', font =('Roboto', 30), justification ='center')],
                 [sg.Text('_' * 130)],
+                [sg.Text("Choose file: "), sg.Input(), sg.FileBrowse(key='-IN2-'), sg.Button("Submit")],
                 [sg.Text('Plain Text', key='-IN-')],[sg.Multiline(size=(130,7), key='box_1')],
                 [sg.Column(col1), sg.Column(col2), sg.Column(col3)],
                 [sg.Text('_' * 130)],
@@ -98,7 +98,10 @@ def gui_execute():
     width, height = sg.Window.get_screen_size()
     width, height = round(width * 0.6), round(height * 0.8)
     window = sg.Window('Cryptography Simple Encryption', layout, size=(width, height))
+    
+    # variables
     output_text = ""
+
     # Event Loop to process "events" and get the "values" of the inputs
     while True:
         event, values = window.read(timeout = 10)
@@ -130,6 +133,9 @@ def gui_execute():
             window['box_2'].update(output_text)
         if event == "Save Cipher" and encrypt_mode:
             saveCiphertext(output_text, values['ciphere_type'])
+        if event == "Submit":
+            text = readFile(values['-IN2-'])
+            window['box_1'].update(text)
 
     window.close()
 
