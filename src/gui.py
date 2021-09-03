@@ -89,7 +89,7 @@ def gui_execute():
                 [sg.Text('_' * 130)],
                 [sg.Text('Cipher Text')],[sg.Multiline(size=(130,7), key='box_2')],
                 [sg.Text(' ' * 130)],
-                [sg.Button('ENCRYPT NOW'), sg.Button('Decryption Mode'), sg.Button('Encryption Mode'), sg.Button('Exit', size = (10, 1))],
+                [sg.Button('ENCRYPT NOW'), sg.Button('Decryption Mode'), sg.Button('Encryption Mode'), sg.Button('Save Cipher'), sg.Button('Exit', size = (10, 1))],
             ]
 
     timer_running, counter = False, 0
@@ -98,7 +98,7 @@ def gui_execute():
     width, height = sg.Window.get_screen_size()
     width, height = round(width * 0.6), round(height * 0.8)
     window = sg.Window('Cryptography Simple Encryption', layout, size=(width, height))
-
+    output_text = ""
     # Event Loop to process "events" and get the "values" of the inputs
     while True:
         event, values = window.read(timeout = 10)
@@ -122,6 +122,8 @@ def gui_execute():
                 key = preprocessPlainText(values['key'])
             output_text = process_input(key, input_text, ciphere_type, ciphere_format, encrypt_mode)
             window['box_2'].update(output_text)
+        if event == "Save Cipher" and encrypt_mode:
+            saveCiphertext(output_text, values['ciphere_type'])
 
     window.close()
 
