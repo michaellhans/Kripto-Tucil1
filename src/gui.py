@@ -7,6 +7,7 @@ from playfair import *
 from affine import *
 from hill import *
 from util import *
+from os import path
 import numpy
 
 def process_input(key, input_text, ciphere_type, cipher_format, encrypt_mode):
@@ -51,8 +52,8 @@ def process_input(key, input_text, ciphere_type, cipher_format, encrypt_mode):
         else: 
             output_text = decryptHillCipher(input_text.lower(), key)
 
-    print("Input text\t:", input_text)
-    print("Output text\t:", output_text)
+    # print("Input text\t:", input_text)
+    # print("Output text\t:", output_text)
     if (cipher_format == True):
         output_text = showPerFive(output_text)
     return output_text
@@ -79,17 +80,22 @@ def gui_execute():
         [sg.Radio('No Space', "CIPHER_FORMAT", default=True, key='ciphere_format_0')],
         [sg.Radio('Five Char Group', "CIPHER_FORMAT", default=False, key='ciphere_format_1')]
     ]
+    col3 = [[sg.Text('Ciphere Text Format')],
+        [sg.Radio('No Space', "CIPHER_FORMAT", default=True, key='ciphere_format_0')],
+        [sg.Radio('Five Char Group', "CIPHER_FORMAT", default=False, key='ciphere_format_1')]
+    ]
     #col4 = [[sg.Text('Name', size =(2, 1)), sg.Input()]]
 
     layout = [  [sg.Text('Cryptography Simple Encryption', font =('Roboto', 30), justification ='center')],
                 [sg.Text('_' * 130)],
-                [sg.Text("Choose file: "), sg.Input(), sg.FileBrowse(key='-IN2-'), sg.Button("Submit")],
+                [sg.Text("Choose file: "), sg.Input(), sg.FileBrowse(key='-IN2-'), sg.Button("Submit"),
+                sg.Radio('Text File', "FILE_TYPE", default=True, key='is_text'), sg.Radio('Binary File', "FILE_TYPE", default=False, key='is_binary')],
                 [sg.Text('Plain Text', key='-IN-')],[sg.Multiline(size=(130,7), key='box_1')],
                 [sg.Column(col1), sg.Column(col2), sg.Column(col3)],
                 [sg.Text('_' * 130)],
                 [sg.Text('Cipher Text', key='-OUT-')],[sg.Multiline(size=(130,7), key='box_2')],
                 [sg.Text(' ' * 130)],
-                [sg.Button('ENCRYPT NOW'), sg.Button('Decryption Mode'), sg.Button('Encryption Mode'), sg.Button('Save Cipher'), sg.Button('Exit', size = (10, 1))],
+                [sg.Button('ENCRYPT NOW'), sg.Button('Decryption Mode'), sg.Button('Encryption Mode'), sg.Button('Save Output'), sg.Button('Exit', size = (10, 1))],
             ]
 
     timer_running, counter = False, 0
@@ -100,7 +106,10 @@ def gui_execute():
     window = sg.Window('Cryptography Simple Encryption', layout, size=(width, height))
     
     # variables
+    ext_text = ""
     output_text = ""
+    output_filename = ""
+    is_binary = False
 
     # Event Loop to process "events" and get the "values" of the inputs
     while True:
@@ -118,24 +127,50 @@ def gui_execute():
             window['-IN-'].update("Cipher Text")
             #window['-Button-'].update("DECRYPT NOW")
         if event == "ENCRYPT NOW":
-            input_text = preprocessPlainText(values['box_1'])
             ciphere_type = values['ciphere_type']
             ciphere_format = values['ciphere_format_1']
+            input_text = preprocessPlainText(values['box_1'])
+            is_binary = values['is_binary']
             if (ciphere_type == "Hill Ciphere"):
                 # ex: 17 17 5; 21 18 21; 2 2 19
                 key = np.matrix(values['key'])
             elif (ciphere_type == "Affine Ciphere"):
                 # format m, b (ex: 7, 10)
                 key = values['key'].split(",")
+            elif (ciphere_type == "Extended Vigenere Ciphere"):
+                key = values['key']
             else:
                 key = preprocessPlainText(values['key'])
-            output_text = process_input(key, input_text, ciphere_type, ciphere_format, encrypt_mode)
-            window['box_2'].update(output_text)
-        if event == "Save Cipher" and encrypt_mode:
-            saveCiphertext(output_text, values['ciphere_type'])
+            if (is_binary):
+                if (ext_text == ""):
+                    sg.Popup("The binary file is not selected!")
+                else:
+                    if (ciphere_type != "Extended Vigenere Ciphere"):
+                        sg.Popup("The binary file can be only encrypted or decrypted by Extended Vigenere Ciphere!")
+                    else:
+                        output_text = process_input(key, ext_text, ciphere_type, ciphere_format, encrypt_mode)
+                        saveBinaryFile(output_text, output_filename, encrypt_mode)
+                        window['box_2'].update("The output binary file is saved on the saved files folder!")
+            else:
+                output_text = process_input(key, input_text, ciphere_type, ciphere_format, encrypt_mode)
+                window['box_2'].update(output_text)
+        if event == "Save Output":
+            saveOutputText(output_text, output_filename, encrypt_mode)
         if event == "Submit":
-            text = readFile(values['-IN2-'])
-            window['box_1'].update(text)
+            is_binary = values['is_binary']
+            ciphere_type = values['ciphere_type']
+                
+            print(str(values['-IN2-']))
+            head, output_filename = path.split(str(values['-IN2-']))
+            if (str(values['-IN2-']).endswith(".txt") == False) and (is_binary == True):
+                ext_text = readBinary(values['-IN2-'])
+                window['box_1'].update("Binary file detected, will not be shown in this box!")
+            elif (str(values['-IN2-']).endswith(".txt") == True) and (is_binary == False):
+                ext_text = ""
+                text = readFile(values['-IN2-'])
+                window['box_1'].update(text)
+            else:
+                sg.Popup("The file type and browsed file is not synchronized!")
 
     window.close()
 
