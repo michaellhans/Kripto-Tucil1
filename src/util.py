@@ -45,7 +45,7 @@ def saveOutputText(ciphertext, filename, encryption_mode, is_extended=False):
         path = "../dump/encrypted/" + filename
     # Decryption mode
     else:
-        path = "../dump/decrypted/" + filename + ".txt"
+        path = "../dump/decrypted/" + filename
 
     # If the active ciphere type is Extended Vigenere Type, use encoding "latin-1"
     if (is_extended):
@@ -62,14 +62,14 @@ def saveBinaryFile(ciphertext, filename, encryption_mode):
     '''
     # If the file is input from the text box
     if (filename == ""):
-        filename = "test-" + str(random.randint(1, 1000)) + ".bin"
+        filename = "test-" + str(random.randint(1, 1000))
     
     # If the mode is in encryption mode
     if (encryption_mode):
-        path = "../dump/encrypted/" + filename + ".bin"
+        path = "../dump/encrypted/" + filename
     # Decryption mode
     else:
-        path = "../dump/decrypted/" + filename[:-4]
+        path = "../dump/decrypted/" + filename
     with open(path, 'w', encoding="latin-1") as file:
         file.write(ciphertext)
 

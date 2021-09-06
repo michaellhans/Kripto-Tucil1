@@ -72,10 +72,8 @@ def gui_execute():
         'Affine Ciphere',
         'Hill Ciphere'
     ]
-    
-    encrypt_mode = True
 
-    # All the stuff inside your window.
+    # All the stuff inside the window.
     col1 = [[sg.Text('Key')],[sg.Multiline(size=(65,2), key='key')]]
     col2 = [[sg.Text('Ciphere Type')],[sg.Combo(encryption_cipher, default_value='Vigenere Ciphere',key='ciphere_type')]]
     col3 = [[sg.Text('Ciphere Text Format')],
@@ -86,7 +84,6 @@ def gui_execute():
         [sg.Radio('No Space', "CIPHER_FORMAT", default=True, key='ciphere_format_0')],
         [sg.Radio('Five Char Group', "CIPHER_FORMAT", default=False, key='ciphere_format_1')]
     ]
-    #col4 = [[sg.Text('Name', size =(2, 1)), sg.Input()]]
 
     layout = [  [sg.Text('Cryptography Simple Encryption', font =('Roboto', 30), justification ='center')],
                 [sg.Text('_' * 130)],
@@ -100,14 +97,13 @@ def gui_execute():
                 [sg.Button('PROCESS NOW'), sg.Button('Decryption Mode'), sg.Button('Encryption Mode'), sg.Button('Save Output'), sg.Button('Exit', size = (10, 1))],
             ]
 
-    timer_running, counter = False, 0
-
     # Create the Window
     width, height = sg.Window.get_screen_size()
     width, height = round(width * 0.6), round(height * 0.8)
     window = sg.Window('Cryptography Simple Encryption', layout, size=(width, height))
     
     # variables
+    encrypt_mode = True
     ext_text = ""
     output_text = ""
     output_filename = ""
@@ -116,18 +112,22 @@ def gui_execute():
     # Event Loop to process "events" and get the "values" of the inputs
     while True:
         event, values = window.read(timeout = 10)
+        
         if event == sg.WIN_CLOSED or event == 'Exit': # if user closes window or clicks cancel
             break
+        
         if event == 'Encryption Mode':
             encrypt_mode = True
             window['-OUT-'].update("Cipher Text")
             window['-IN-'].update("Plain Text")
             window['-MODE-'].update("Encryption Mode")
+        
         if event == 'Decryption Mode':
             encrypt_mode = False
             window['-OUT-'].update("Plain Text")
             window['-IN-'].update("Cipher Text")
             window['-MODE-'].update("Decryption Mode")
+        
         if event == "PROCESS NOW":
             ciphere_type = values['ciphere_type']
             ciphere_format = values['ciphere_format_1']
@@ -156,6 +156,7 @@ def gui_execute():
             else:
                 output_text = process_input(key, input_text, ciphere_type, ciphere_format, encrypt_mode)
                 window['box_2'].update(output_text)
+
         if event == "Save Output":
             if (ciphere_type == "Extended Vigenere Ciphere"):
                 saveOutputText(output_text, output_filename, encrypt_mode, True)
@@ -171,10 +172,12 @@ def gui_execute():
             if (str(values['-IN2-']).endswith(".txt") == False) and (is_binary == True):
                 ext_text = readBinary(values['-IN2-'])
                 window['box_1'].update("Binary file detected, will not be shown in this box!")
+                sg.Popup("Binary file successfully uploaded!")
             elif (str(values['-IN2-']).endswith(".txt") == True) and (is_binary == False):
                 ext_text = ""
                 text = readFile(values['-IN2-'])
                 window['box_1'].update(text)
+                sg.Popup("Text file successfully uploaded!")
             else:
                 sg.Popup("The file type and browsed file is not synchronized!")
 

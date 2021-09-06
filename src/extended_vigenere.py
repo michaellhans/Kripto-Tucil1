@@ -1,4 +1,5 @@
-# Extended Vigenere Cipher
+# extended_vigenere.py
+# Contain all Extended Vigenere Ciphere encryption and decryption algorithm
 
 from vigenere_support import ascii_to_int, int_to_ascii, ascii_cipher_matrix
 
