@@ -97,7 +97,7 @@ def gui_execute():
                 [sg.Text('_' * 130)],
                 [sg.Text('Cipher Text', key='-OUT-')],[sg.Multiline(size=(130,7), key='box_2')],
                 [sg.Text('Encryption Mode', key='-MODE-')],
-                [sg.Button('PROCESS NOW', button_color="Green"), sg.Button('Decryption Mode'), sg.Button('Encryption Mode'), sg.Button('Save Output'), sg.Button('Exit', size = (10, 1))],
+                [sg.Button('PROCESS NOW'), sg.Button('Decryption Mode'), sg.Button('Encryption Mode'), sg.Button('Save Output'), sg.Button('Exit', size = (10, 1))],
             ]
 
     timer_running, counter = False, 0
@@ -157,7 +157,11 @@ def gui_execute():
                 output_text = process_input(key, input_text, ciphere_type, ciphere_format, encrypt_mode)
                 window['box_2'].update(output_text)
         if event == "Save Output":
-            saveOutputText(output_text, output_filename, encrypt_mode)
+            if (ciphere_type == "Extended Vigenere Ciphere"):
+                saveOutputText(output_text, output_filename, encrypt_mode, True)
+            else:
+                saveOutputText(output_text, output_filename, encrypt_mode)
+
         if event == "Submit":
             is_binary = values['is_binary']
             ciphere_type = values['ciphere_type']

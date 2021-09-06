@@ -1,4 +1,6 @@
-# Vigenere Cipher (Default and Full)
+# default_full.py
+# Contain all default and full Vigenere Ciphere encryption and decryption algorithm
+# Difference between default and full vigenere: The cipher matrix
 
 from vigenere_support import alpha_to_int, int_to_alpha, default_cipher_matrix, full_cipher_matrix
 

@@ -1,4 +1,5 @@
-# Vigenere Support
+# vigenere_support.py
+# Support all vigenere algorithm such as all general maps and cipher matrix
 
 import random
 

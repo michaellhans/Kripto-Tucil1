@@ -1,4 +1,5 @@
-# Auto Key Vigenere Cipher
+# auto_key_vigenere.py
+# Contain all auto key Vigenere Ciphere encryption and decryption algor
 
 from vigenere_support import alpha_to_int, int_to_alpha, default_cipher_matrix
 

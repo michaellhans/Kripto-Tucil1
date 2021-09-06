@@ -1,3 +1,6 @@
+# affine.py
+# Contain all affine ciphere encryption and decryption algor
+
 from typing import Any
 import string
 

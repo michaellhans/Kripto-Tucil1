@@ -1,3 +1,6 @@
+# playfair.py
+# Contain all playfair encryption and decryption algorithm
+
 import string
 import numpy as np
 
