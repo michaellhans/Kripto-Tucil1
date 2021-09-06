@@ -1,5 +1,7 @@
 import PySimpleGUI as sg
 import threading
+
+from PySimpleGUI.PySimpleGUI import GREENS
 from auto_key_vigenere import *
 from default_full_vigenere import *
 from extended_vigenere import *
@@ -94,8 +96,8 @@ def gui_execute():
                 [sg.Column(col1), sg.Column(col2), sg.Column(col3)],
                 [sg.Text('_' * 130)],
                 [sg.Text('Cipher Text', key='-OUT-')],[sg.Multiline(size=(130,7), key='box_2')],
-                [sg.Text(' ' * 130)],
-                [sg.Button('ENCRYPT NOW'), sg.Button('Decryption Mode'), sg.Button('Encryption Mode'), sg.Button('Save Output'), sg.Button('Exit', size = (10, 1))],
+                [sg.Text('Encryption Mode', key='-MODE-')],
+                [sg.Button('PROCESS NOW', button_color="Green"), sg.Button('Decryption Mode'), sg.Button('Encryption Mode'), sg.Button('Save Output'), sg.Button('Exit', size = (10, 1))],
             ]
 
     timer_running, counter = False, 0
@@ -120,13 +122,13 @@ def gui_execute():
             encrypt_mode = True
             window['-OUT-'].update("Cipher Text")
             window['-IN-'].update("Plain Text")
-            #window['-Button-'].update("ENCRYPT NOW")
+            window['-MODE-'].update("Encryption Mode")
         if event == 'Decryption Mode':
             encrypt_mode = False
             window['-OUT-'].update("Plain Text")
             window['-IN-'].update("Cipher Text")
-            #window['-Button-'].update("DECRYPT NOW")
-        if event == "ENCRYPT NOW":
+            window['-MODE-'].update("Decryption Mode")
+        if event == "PROCESS NOW":
             ciphere_type = values['ciphere_type']
             ciphere_format = values['ciphere_format_1']
             input_text = preprocessPlainText(values['box_1'])
